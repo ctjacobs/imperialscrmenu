@@ -73,6 +73,13 @@ public class MainActivity extends Activity
     
     private String parseMenu(String menu, String day)
     {
-        return Html.fromHtml(menu).toString();
+        String regex = Pattern.quote("Monday") + "(.*?)" + Pattern.quote("Tuesday");
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(menu);
+        String menu_of_the_day = "";
+        while (m.find()) {
+           menu_of_the_day = m.group(1);
+        }
+        return Html.fromHtml(menu_of_the_day).toString();
     }
 }
