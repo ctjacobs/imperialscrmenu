@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Imperial SCR Menu</string>
-    <string name="menu_url">http://www3.imperial.ac.uk/eatinganddrinking/cateringoutlets/seniorcommonroom/scrrestaurantmenu</string>
+    <string name="menu_page_url">http://www3.imperial.ac.uk/eatinganddrinking/cateringoutlets/seniorcommonroom/scrrestaurantmenu</string>
+    <string name="menu_page_title">Senior Common Room Restaurant Menu</string>
 </resources>
