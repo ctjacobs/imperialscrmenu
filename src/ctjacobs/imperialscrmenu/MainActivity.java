@@ -3,6 +3,8 @@ package ctjacobs.imperialscrmenu;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.net.*;
+import java.io.*;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -23,5 +25,22 @@ public class MainActivity extends Activity
         DateFormat dateFormat = new SimpleDateFormat("EEEE, dd MMM");
         Date date = new Date();
         textTitle.setText("Menu for " + dateFormat.format(date));
+     
+        return;
+    }
+
+    /** Retrieve the menu from the SCR's webpage. */
+    public void getMenu()
+    {
+        try
+        {
+            URL url = new URL(this.getString(R.string.menu_url));
+            InputStreamReader stream = new InputStreamReader(url.openStream());
+        } 
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+        return;
     }
 }
