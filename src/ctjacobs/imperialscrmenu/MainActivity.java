@@ -49,12 +49,10 @@ public class MainActivity extends Activity
             
             /* Searches for the portion of the HTML that contains the menu title. */
             String line;
-            Pattern pattern = Pattern.compile(this.getString(R.string.menu_page_url));
-            Matcher matcher;
+            String menu_page_title = this.getString(R.string.menu_page_title);
             while((line = reader.readLine()) != null)
             {
-                matcher = pattern.matcher(line);
-                if(matcher.find())
+                if(line.contains(menu_page_title))
                 {
                     return line.toString();
                 }
