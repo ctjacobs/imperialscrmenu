@@ -9,6 +9,7 @@ import java.util.regex.*;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Html;
 
 import android.widget.TextView;
 
@@ -27,14 +28,19 @@ public class MainActivity extends Activity
         Date date = new Date();
         textTitle.setText("Menu for " + dateFormat.format(date));
 
-        String text = (String) this.getMenu();
-        System.out.println(text);
+        /* Retrieve and parse the menu */
+        String menu = (String) this.getMenu();
+        TextView textMenu = (TextView) this.findViewById(R.id.textMenu);
+        String day = new String("Monday");
         
+        /* Display the menu to the user */
+        textMenu.setText(this.parseMenu(menu, day));
+
         return;
     }
 
     /** Retrieve the menu from the SCR's webpage. */
-    public String getMenu()
+    private String getMenu()
     {
         try
         {
@@ -63,5 +69,10 @@ public class MainActivity extends Activity
             e.printStackTrace();
         }
         return "";
+    }
+    
+    private String parseMenu(String menu, String day)
+    {
+        return Html.fromHtml(menu).toString();
     }
 }
