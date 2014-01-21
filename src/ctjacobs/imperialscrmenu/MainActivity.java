@@ -15,8 +15,9 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Html;
 import android.graphics.Paint;
-
-import android.widget.TextView;
+import android.widget.*;
+import android.view.*;
+import android.graphics.Color;
 
 public class MainActivity extends Activity
 {
@@ -33,19 +34,39 @@ public class MainActivity extends Activity
         Date date = new Date();
         textTitle.setTextAppearance(this, android.R.style.TextAppearance_Large);
         textTitle.setText("Menu for " + dateFormat.format(date));
-
-        /* Retrieve and parse the menu */
-        String menu = (String) this.getMenu();
-        TextView textMenu = (TextView) this.findViewById(R.id.textMenu);
-        String day = new String("Monday");
+        textTitle.setTextColor(Color.BLACK);
         
-        /* Display the menu to the user */
+        LinearLayout layout = (LinearLayout) this.findViewById(R.id.mainLayout);
+        
+        /* Add a divider between the title and the menu itself. */
+        TextView divider = new TextView(this);
+        divider.setGravity(Gravity.CENTER);
+        divider.setText("~~~~~~");
+        divider.setTextColor(Color.BLUE);
+        layout.addView(divider);
+            
+        /* Retrieve and parse the menu. */
+        String menu = (String) this.getMenu();
+        
+        /* Display the menu to the user. */
+        String day = new String("Monday");
         List<String> foodChoices = this.parseMenu(menu, day);
         for(int i = 0; i < foodChoices.size(); i++) 
         {
             String choice = foodChoices.get(i);
-            textMenu.append(Html.fromHtml("&#8226; ") + choice);
-            textMenu.append("\n\n");
+            TextView tv = new TextView(this);
+            tv.setPadding(10, 3, 10, 3);
+            tv.setGravity(Gravity.CENTER);
+            tv.setTextColor(Color.BLACK);
+            tv.setText(choice);
+            layout.addView(tv);
+            
+            /* Add a divider between each food choice. */
+            divider = new TextView(this);
+            divider.setGravity(Gravity.CENTER);
+            divider.setText("~~~~~~");
+            divider.setTextColor(Color.BLUE);
+            layout.addView(divider);
         }
         
         if(isEarly())
@@ -72,7 +93,7 @@ public class MainActivity extends Activity
     {
         try
         {
-            /* Open a connection to the SCR menu's website */
+            /* Open a connection to the SCR menu's website. */
             URL url = new URL(this.getString(R.string.menu_page_url));
             URLConnection connection = url.openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (compatible)");
@@ -101,7 +122,7 @@ public class MainActivity extends Activity
     
     private List<String> parseMenu(String menu, String day)
     {
-        /** Grab all the food choices from the current day's menu and strip all the HTML tags */
+        /** Grab all the food choices from the current day's menu and strip all the HTML tags. */
         String regex = Pattern.quote("Monday") + "(.*?)" + Pattern.quote("Tuesday");
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(menu);
@@ -111,7 +132,7 @@ public class MainActivity extends Activity
         {
            menuOfTheDay = m.group(1);
            System.out.println(menuOfTheDay);
-           /* This assumes that each food choice is presented as a separate bullet point */
+           /* This assumes that each food choice is presented as a separate bullet point. */
            regex = Pattern.quote("<li>") + "(.*?)" + Pattern.quote("</li>");
            p = Pattern.compile(regex);
            m = p.matcher(menuOfTheDay);

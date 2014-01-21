@@ -3,9 +3,11 @@
     android:layout_width="fill_parent" android:layout_height="fill_parent">
     
    <LinearLayout
+       android:id="@+id/mainLayout"
        android:orientation="vertical"
        android:layout_width="fill_parent"
        android:layout_height="fill_parent"
+       android:background="@android:color/white"
        >
    <TextView
        android:id="@+id/textTitle"
@@ -13,12 +15,6 @@
        android:layout_height="wrap_content"
        android:padding="10dp"
        android:gravity="center"
-       />
-   <TextView
-       android:id="@+id/textMenu"
-       android:layout_width="fill_parent"
-       android:layout_height="wrap_content"
-       android:padding="20dp"
        />
    </LinearLayout>
    
