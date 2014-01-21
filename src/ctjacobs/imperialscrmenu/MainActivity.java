@@ -100,6 +100,7 @@ public class MainActivity extends Activity
     
     private List<String> parseMenu(String menu, String day)
     {
+        /** Grab all the food choices from the current day's menu and strip all the HTML tags */
         String regex = Pattern.quote("Monday") + "(.*?)" + Pattern.quote("Tuesday");
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(menu);
@@ -108,7 +109,6 @@ public class MainActivity extends Activity
         if(m.find()) 
         {
            menuOfTheDay = m.group(1);
-           System.out.println("hello!");
            System.out.println(menuOfTheDay);
            regex = Pattern.quote("<li>") + "(.*?)" + Pattern.quote("</li>");
            p = Pattern.compile(regex);
