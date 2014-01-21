@@ -16,6 +16,6 @@
 ImperialSCRMenu
 =================
 
-An Android application for checking the daily menu at Imperial's SCR restaurant.
+ImperialSCRMenu is an Android application for checking the daily menu at Imperial's SCR restaurant.
 
 Note: This project is not affiliated with Imperial College London.
