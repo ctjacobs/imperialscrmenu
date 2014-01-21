@@ -18,6 +18,7 @@ import android.graphics.Paint;
 import android.widget.*;
 import android.view.*;
 import android.graphics.Color;
+import android.graphics.Typeface;
 
 public class MainActivity extends Activity
 {
@@ -33,6 +34,7 @@ public class MainActivity extends Activity
         DateFormat dateFormat = new SimpleDateFormat("EEEE, dd MMM");
         Date date = new Date();
         textTitle.setTextAppearance(this, android.R.style.TextAppearance_Large);
+        textTitle.setTypeface(Typeface.SERIF, Typeface.NORMAL);
         textTitle.setText("Menu for " + dateFormat.format(date));
         textTitle.setTextColor(Color.BLACK);
         
@@ -58,6 +60,7 @@ public class MainActivity extends Activity
             tv.setPadding(10, 3, 10, 3);
             tv.setGravity(Gravity.CENTER);
             tv.setTextColor(Color.BLACK);
+            tv.setTypeface(Typeface.SERIF, Typeface.ITALIC);
             tv.setText(choice);
             layout.addView(tv);
             
