@@ -6,8 +6,12 @@ import java.text.SimpleDateFormat;
 import java.net.*;
 import java.io.*;
 import java.util.regex.*;
+import java.util.*;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Html;
 
@@ -26,6 +30,7 @@ public class MainActivity extends Activity
         TextView textTitle = (TextView) this.findViewById(R.id.textTitle);
         DateFormat dateFormat = new SimpleDateFormat("EEEE, dd MMM");
         Date date = new Date();
+        textTitle.setTextAppearance(this, android.R.style.TextAppearance_Large);
         textTitle.setText("Menu for " + dateFormat.format(date));
 
         /* Retrieve and parse the menu */
@@ -34,8 +39,30 @@ public class MainActivity extends Activity
         String day = new String("Monday");
         
         /* Display the menu to the user */
-        textMenu.setText(this.parseMenu(menu, day));
-
+        List<String> foodChoices = this.parseMenu(menu, day);
+        for(int i = 0; i < foodChoices.size(); i++) 
+        {
+            String choice = foodChoices.get(i);
+            textMenu.append(choice);
+            textMenu.append("\n\n");
+        }
+        
+        if(isEarly())
+        {
+           AlertDialog.Builder builder = new AlertDialog.Builder(this);
+           builder.setMessage("You are accessing the menu before 10 am. It might therefore be out-of-date.");
+           builder.setPositiveButton("OK",
+                                    new DialogInterface.OnClickListener() 
+                                    {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) 
+                                        {
+                                            dialog.dismiss();
+                                        }
+                                    });
+           AlertDialog dialog = builder.create();
+           dialog.show();
+        }
         return;
     }
 
@@ -55,10 +82,10 @@ public class MainActivity extends Activity
             
             /* Searches for the portion of the HTML that contains the menu title. */
             String line;
-            String menu_page_title = this.getString(R.string.menu_page_title);
+            String menuPageTitle = this.getString(R.string.menu_page_title);
             while((line = reader.readLine()) != null)
             {
-                if(line.contains(menu_page_title))
+                if(line.contains(menuPageTitle))
                 {
                     return line.toString();
                 }
@@ -71,15 +98,41 @@ public class MainActivity extends Activity
         return "";
     }
     
-    private String parseMenu(String menu, String day)
+    private List<String> parseMenu(String menu, String day)
     {
         String regex = Pattern.quote("Monday") + "(.*?)" + Pattern.quote("Tuesday");
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(menu);
-        String menu_of_the_day = "";
-        while (m.find()) {
-           menu_of_the_day = m.group(1);
+        String menuOfTheDay = "";
+        List<String> foodChoices = new ArrayList<String>();
+        if(m.find()) 
+        {
+           menuOfTheDay = m.group(1);
+           System.out.println("hello!");
+           System.out.println(menuOfTheDay);
+           regex = Pattern.quote("<li>") + "(.*?)" + Pattern.quote("</li>");
+           p = Pattern.compile(regex);
+           m = p.matcher(menuOfTheDay);
+           while(m.find())
+           {
+               System.out.println(m.group(1));
+               foodChoices.add(Html.fromHtml(m.group(1)).toString());
+           }
         }
-        return Html.fromHtml(menu_of_the_day).toString();
+        return foodChoices;
+    }
+    
+    private Boolean isEarly()
+    {
+        /** Warn the user that the menu might not be up-to-date yet, if it is before 10 am. */
+        Calendar present = Calendar.getInstance();
+        if(present.get(Calendar.HOUR_OF_DAY) < 10)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
