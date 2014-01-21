@@ -11,11 +11,14 @@
        android:id="@+id/textTitle"
        android:layout_width="fill_parent"
        android:layout_height="wrap_content"
+       android:padding="10dp"
+       android:gravity="center"
        />
    <TextView
        android:id="@+id/textMenu"
        android:layout_width="fill_parent"
        android:layout_height="wrap_content"
+       android:padding="20dp"
        />
    </LinearLayout>
    

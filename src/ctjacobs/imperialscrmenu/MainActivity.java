@@ -14,6 +14,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Html;
+import android.graphics.Paint;
 
 import android.widget.TextView;
 
@@ -43,7 +44,7 @@ public class MainActivity extends Activity
         for(int i = 0; i < foodChoices.size(); i++) 
         {
             String choice = foodChoices.get(i);
-            textMenu.append(choice);
+            textMenu.append(Html.fromHtml("&#8226; ") + choice);
             textMenu.append("\n\n");
         }
         
@@ -110,6 +111,7 @@ public class MainActivity extends Activity
         {
            menuOfTheDay = m.group(1);
            System.out.println(menuOfTheDay);
+           /* This assumes that each food choice is presented as a separate bullet point */
            regex = Pattern.quote("<li>") + "(.*?)" + Pattern.quote("</li>");
            p = Pattern.compile(regex);
            m = p.matcher(menuOfTheDay);
