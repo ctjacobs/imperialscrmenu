@@ -1,17 +1,17 @@
 package ctjacobs.imperialscrmenu;
 
-import java.util.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.net.*;
 import java.io.*;
 import java.util.regex.*;
 import java.util.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.graphics.Paint;
@@ -38,7 +38,7 @@ public class MainActivity extends Activity
         textTitle.setText("Menu for " + dateFormat.format(date));
         textTitle.setTextColor(Color.BLACK);
         
-        LinearLayout layout = (LinearLayout) this.findViewById(R.id.mainLayout);
+        LinearLayout layout = (LinearLayout) this.findViewById(R.id.layoutMain);
         
         /* Add a divider between the title and the menu itself. */
         TextView divider = new TextView(this);
@@ -128,10 +128,8 @@ public class MainActivity extends Activity
         switch (item.getItemId())
         {
            case R.id.menu_about:
-               Dialog dialog = new Dialog(this);
-			      dialog.setContentView(R.layout.about);
-			      dialog.show();
-           
+               Intent intent = new Intent(getApplicationContext(), AboutDialogActivity.class);
+               startActivity(intent);
                return true;
     
            default:

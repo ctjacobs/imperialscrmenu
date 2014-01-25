@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+ 
+    <TextView
+        android:id="@+id/textAbout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="About" />
+ 
+    <TextView
+        android:id="@+id/textAboutDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/textAboutAuthor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:text="" />
+        
+    <TextView
+        android:id="@+id/textAboutDisclaimer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:textSize="12sp"
+        android:text="" />
+        
+   <Button
+        android:id="@+id/buttonClose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Close"
+        android:onClick="onCloseClicked" />
+
+</LinearLayout>
