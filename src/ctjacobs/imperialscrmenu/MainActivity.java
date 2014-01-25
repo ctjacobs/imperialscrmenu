@@ -51,46 +51,94 @@ public class MainActivity extends Activity
         String menu = (String) this.getMenu();
         
         /* Display the menu to the user. */
-        String day = new String("Monday");
-        List<String> foodChoices = this.parseMenu(menu, day);
-        for(int i = 0; i < foodChoices.size(); i++) 
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        if(day != 1 && day != 7) /* If the current day is not Saturday nor Sunday... */
         {
-            String choice = foodChoices.get(i);
-            TextView tv = new TextView(this);
-            tv.setPadding(10, 3, 10, 3);
-            tv.setGravity(Gravity.CENTER);
-            tv.setTextColor(Color.BLACK);
-            tv.setTypeface(Typeface.SERIF, Typeface.ITALIC);
-            tv.setText(choice);
-            layout.addView(tv);
+            List<String> foodChoices = this.parseMenu(menu, day);
             
-            /* Add a divider between each food choice. */
-            divider = new TextView(this);
-            divider.setGravity(Gravity.CENTER);
-            divider.setText("~~~~~~");
-            divider.setTextColor(Color.BLUE);
-            layout.addView(divider);
+            for(int i = 0; i < foodChoices.size(); i++) 
+            {
+                String choice = foodChoices.get(i);
+                TextView tv = new TextView(this);
+                tv.setPadding(10, 3, 10, 3);
+                tv.setGravity(Gravity.CENTER);
+                tv.setTextColor(Color.BLACK);
+                tv.setTypeface(Typeface.SERIF, Typeface.ITALIC);
+                tv.setText(choice);
+                layout.addView(tv);
+               
+                /* Add a divider between each food choice. */
+                divider = new TextView(this);
+                divider.setGravity(Gravity.CENTER);
+                divider.setText("~~~~~~");
+                divider.setTextColor(Color.BLUE);
+                layout.addView(divider);
+            }
+            
+            /* Warn the user if the current time is before 10 am. */
+            if(isEarly())
+            {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("You are accessing the menu before 10 am. It might therefore be out-of-date.");
+                builder.setPositiveButton("OK",
+                                          new DialogInterface.OnClickListener() 
+                                          {
+                                              @Override
+                                              public void onClick(DialogInterface dialog, int which) 
+                                              {
+                                                  dialog.dismiss();
+                                              }
+                                          });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
         }
-        
-        if(isEarly())
+        else
         {
-           AlertDialog.Builder builder = new AlertDialog.Builder(this);
-           builder.setMessage("You are accessing the menu before 10 am. It might therefore be out-of-date.");
-           builder.setPositiveButton("OK",
-                                    new DialogInterface.OnClickListener() 
-                                    {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) 
-                                        {
-                                            dialog.dismiss();
-                                        }
-                                    });
-           AlertDialog dialog = builder.create();
-           dialog.show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("No menu exists for today. The SCR is not open on weekends.");
+            builder.setPositiveButton("OK",
+                                      new DialogInterface.OnClickListener() 
+                                      {
+                                          @Override
+                                          public void onClick(DialogInterface dialog, int which) 
+                                          {
+                                              dialog.dismiss();
+                                          }
+                                      });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
+
         return;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.layout.menu, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+           case R.id.menu_about:
+               Dialog dialog = new Dialog(this);
+			      dialog.setContentView(R.layout.about);
+			      dialog.show();
+           
+               return true;
+    
+           default:
+               return super.onOptionsItemSelected(item);
+        }
+    }    
+      
     /** Retrieve the menu from the SCR's webpage. */
     private String getMenu()
     {
@@ -123,10 +171,21 @@ public class MainActivity extends Activity
         return "";
     }
     
-    private List<String> parseMenu(String menu, String day)
+    private List<String> parseMenu(String menu, int day)
     {
+        String[] days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+        
         /** Grab all the food choices from the current day's menu and strip all the HTML tags. */
-        String regex = Pattern.quote("Monday") + "(.*?)" + Pattern.quote("Tuesday");
+        String regex = "";
+        if(day == 6)
+        {
+            /* Nothing after Friday, so just read until the end of the page. */
+            regex = Pattern.quote(days[day-1]) + "(.*?)$";
+        }
+        else
+        {
+            regex = Pattern.quote(days[day-1]) + "(.*?)" + Pattern.quote(days[day]);
+        }
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(menu);
         String menuOfTheDay = "";
