@@ -18,4 +18,4 @@ ImperialSCRMenu
 
 ImperialSCRMenu is an Android application for checking the daily menu at Imperial's SCR restaurant.
 
-Note: This project is not affiliated with Imperial College London.
+Note: The ImperialSCRMenu project is not affiliated with Imperial College London nor with its catering services. The author is not responsible for any inaccuracies in the content provided by the SCR restaurant's website.

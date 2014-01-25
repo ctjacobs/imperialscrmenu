@@ -1,3 +1,20 @@
+/*    
+    Copyright (C) 2014 Christian Jacobs.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+*/
+
 package ctjacobs.imperialscrmenu;
 
 import java.net.*;
@@ -91,36 +108,12 @@ public class MainActivity extends Activity
             /* Warn the user if the current time is before 10 am. */
             if(isEarly())
             {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("You are accessing the menu before 10 am. It might therefore be out-of-date.");
-                builder.setPositiveButton("OK",
-                                          new DialogInterface.OnClickListener() 
-                                          {
-                                              @Override
-                                              public void onClick(DialogInterface dialog, int which) 
-                                              {
-                                                  dialog.dismiss();
-                                              }
-                                          });
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                showAlert("You are accessing the menu before 10 am. It might therefore be out-of-date.");
             }
         }
         else
         {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("No menu exists for today. The SCR is not open on weekends.");
-            builder.setPositiveButton("OK",
-                                      new DialogInterface.OnClickListener() 
-                                      {
-                                          @Override
-                                          public void onClick(DialogInterface dialog, int which) 
-                                          {
-                                              dialog.dismiss();
-                                          }
-                                      });
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            showAlert("No menu exists for today. The SCR is not open on weekends.");
         }
 
         return;
@@ -174,8 +167,14 @@ public class MainActivity extends Activity
                 }
             }
         }
+        catch(RuntimeException e)
+        {
+            showAlert("Could not obtain the menu from the SCR website. Check Internet connection?");
+            e.printStackTrace();
+        }
         catch(IOException e)
         {
+            showAlert("Could not obtain the menu from the SCR website. An IOException occurred.");
             e.printStackTrace();
         }
         return "";
@@ -230,4 +229,23 @@ public class MainActivity extends Activity
             return false;
         }
     }
+    
+    private void showAlert(String message)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setPositiveButton("OK",
+                                  new DialogInterface.OnClickListener() 
+                                  {
+                                      @Override
+                                      public void onClick(DialogInterface dialog, int which) 
+                                      {
+                                          dialog.dismiss();
+                                      }
+                                  });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        return;
+    }
+    
 }
