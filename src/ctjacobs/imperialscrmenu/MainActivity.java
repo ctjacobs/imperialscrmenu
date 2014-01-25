@@ -76,6 +76,18 @@ public class MainActivity extends Activity
                 layout.addView(divider);
             }
             
+            if(foodChoices.size() != 0)
+            {
+                TextView tv = new TextView(this);
+                tv.setPadding(10, 3, 10, 3);
+                tv.setGravity(Gravity.CENTER);
+                tv.setText("V = Suitable for Vegetarians, GF = Gluten Free, NF = Nuts Free, DF = Dairy Free");
+                tv.setTextAppearance(this, android.R.style.TextAppearance_Small);
+                tv.setTypeface(Typeface.SERIF, Typeface.NORMAL);
+                tv.setTextColor(Color.RED);
+                layout.addView(tv);
+            }
+            
             /* Warn the user if the current time is before 10 am. */
             if(isEarly())
             {
