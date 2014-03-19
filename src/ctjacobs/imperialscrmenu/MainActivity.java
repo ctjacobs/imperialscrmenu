@@ -188,30 +188,39 @@ public class MainActivity extends Activity
         String regex = "";
         if(day == 6)
         {
-            /* Nothing after Friday, so just read until the end of the page. */
-            regex = Pattern.quote(days[day-1]) + "(.*?)$";
+           /* Nothing after Friday, so just read until the end of the page. */
+           regex = Pattern.quote(days[day-1]) + "(.*?)$";
         }
         else
         {
-            regex = Pattern.quote(days[day-1]) + "(.*?)" + Pattern.quote(days[day]);
+           regex = Pattern.quote(days[day-1]) + "(.*?)" + Pattern.quote(days[day]);
         }
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(menu);
         String menuOfTheDay = "";
         List<String> foodChoices = new ArrayList<String>();
+        
+        /* If m.find() is true, then we are dealing with the old form of the menu (with all days listed). */
         if(m.find()) 
         {
            menuOfTheDay = m.group(1);
-           System.out.println(menuOfTheDay);
-           /* This assumes that each food choice is presented as a separate bullet point. */
-           regex = Pattern.quote("<li>") + "(.*?)" + Pattern.quote("</li>");
-           p = Pattern.compile(regex);
-           m = p.matcher(menuOfTheDay);
-           while(m.find())
-           {
-               System.out.println(m.group(1));
-               foodChoices.add(Html.fromHtml(m.group(1)).toString());
-           }
+        }
+        else
+        {
+           /* This handles the new form of the menu. */
+           /* Use the whole string, since it contains the menu only for the current day. */
+           menuOfTheDay = menu;
+        }
+        
+        System.out.println(menuOfTheDay);
+        /* This assumes that each food choice is presented as a separate bullet point. */
+        regex = Pattern.quote("<li>") + "(.*?)" + Pattern.quote("</li>");
+        p = Pattern.compile(regex);
+        m = p.matcher(menuOfTheDay);
+        while(m.find())
+        {
+           System.out.println(m.group(1));
+           foodChoices.add(Html.fromHtml(m.group(1)).toString());
         }
         return foodChoices;
     }
